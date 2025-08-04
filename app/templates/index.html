@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,14 +13,24 @@
     }
   </script>
 </head>
+
 <body>
-  <h1>Hello World</h1>
-  <form method="POST">
-    <input type="text" name="number" />
-    <button type="submit">Calculate Square</button>
+  <h1>Mini Forum</h1>
+
+  <form method="post">
+    <p><input type="text" name="name" placeholder="Your name" required></p>
+    <p><textarea name="content" placeholder="Your message" required></textarea></p>
+    <p><button type="submit">Post</button></p>
   </form>
-  {% if result %}
-    <p>Result: {{ result }}</p>
-  {% endif %}
+
+  <hr>
+  <h2>Messages:</h2>
+  {% for msg in messages %}
+    <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
+  {% else %}
+    <p>No messages yet.</p>
+  {% endfor %}
 </body>
+
 </html>
+

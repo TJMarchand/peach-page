@@ -1,15 +1,15 @@
-from flask import Blueprint, render_template, request
-from .logic import calculate_square
+from flask import Blueprint, render_template, request, redirect, url_for
+from .logic import load_messages, save_message
 
-main = Blueprint('main', __name__)
+main = Blueprint("main", __name__)
 
-@main.route('/', methods=['GET', 'POST'])
+@main.route("/", methods=["GET", "POST"])
 def index():
-    result = None
-    if request.method == 'POST':
-        try:
-            number = float(request.form['number'])
-            result = calculate_square(number)
-        except ValueError:
-            result = 'Invalid input'
-    return render_template('index.html', result=result)
+    if request.method == "POST":
+        name = request.form.get("name")
+        content = request.form.get("content")
+        if name and content:
+            save_message(name, content)
+            return redirect(url_for("main.index"))  # Prevent re-posting on refresh
+    messages = load_messages()
+    return render_template("index.html", messages=messages)
