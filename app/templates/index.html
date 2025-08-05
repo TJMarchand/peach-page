@@ -17,19 +17,32 @@
 <body>
   <h1>Mini Forum</h1>
 
-  <form method="post">
-    <p><input type="text" name="name" placeholder="Your name" required></p>
-    <p><textarea name="content" placeholder="Your message" required></textarea></p>
-    <p><button type="submit">Post</button></p>
-  </form>
+  <h2>Welcome{% if user %}, {{ user }}{% endif %}</h2>
 
-  <hr>
+  {% if user %}
+    <form method="post">
+      <textarea name="content" required></textarea><br>
+      <button type="submit">Post message</button>
+    </form>
+    <p><a href="{{ url_for('main.logout') }}">Logout</a></p>
+  {% else %}
+    <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
+  {% endif %}
+
   <h2>Messages:</h2>
   {% for msg in messages %}
     <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
   {% else %}
     <p>No messages yet.</p>
   {% endfor %}
+
+{#
+  This is a Jinja2 comment. It works when processing with flask. for {% %} statements.
+  Use {% if/for ... %} ... {% endif/endfor %} for if/for statements in html/Jinja2.
+  Output values with {{ var }}.
+  Jinja2 allows reading dictionaries with dots. Below 'name' is the key. Thus msg.name is msg["name"].
+#}
+
 </body>
 
 </html>
