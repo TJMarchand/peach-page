@@ -26,7 +26,7 @@ def register():
         if save_user(username, password):
             return redirect(url_for("main.login"))
         else:
-            return "Username already exists"
+            return render_template("register.html", user_exist=True)
     # If request.method == "GET", we didn't return yet. So we want simply want to render the template.
     return render_template("register.html")
 
@@ -39,7 +39,7 @@ def login():
             session["username"] = username
             return redirect(url_for("main.index"))
         else:
-            return "Invalid username or password"
+            return render_template("login.html", non_exist=True)
         
     return render_template("login.html")
 

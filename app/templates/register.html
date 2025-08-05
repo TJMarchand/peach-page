@@ -16,6 +16,7 @@
 
 <body>
     <h2>Register</h2>
+    <p>{% if user_exist %}User already exists.{% endif %}</p>
     <form method="post">
     <label>Username: <input type="text" name="username"></label><br>
     <label>Password: <input type="password" name="password"></label><br>
