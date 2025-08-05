@@ -1,5 +1,39 @@
+html {
+  min-height: 100%;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: serif;
   margin: 2rem;
-  background-color: #f2f2f2;
+  background: linear-gradient(lightblue, pink);
+  text-align: center;
+  color: palevioletred;
+}
+
+/* ==== Forum styles ==== */
+#peach-gif {
+  width: 30%;
+  border: 5px solid pink;
+  border-radius: 5%;
+}
+
+#forum {
+  margin: 50px auto 0 auto;
+  width: 800px;
+  background-color: aliceblue;
+  border: 5px solid lightblue;
+  border-radius: 10%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 120px 1fr; /* fixed width for label, flexible for input */
+  margin: 10px auto 10px auto;
+  align-items: center;
+  width: 300px;
+}
+
+label {
+  text-align: right;
+  margin-right: 40px;
 }

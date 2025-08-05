@@ -18,8 +18,14 @@
     <h2>Login</h2>
     <p>{% if non_exist %}Username of password incorrect.{% endif %}</p>
     <form method="post">
-    <label>Username: <input type="text" name="username"></label><br>
-    <label>Password: <input type="password" name="password"></label><br>
+    <div class="form-row">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+    </div>
+    <div class="form-row">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+    </div>
     <button type="submit">Login</button>
     </form>
     <a href="{{ url_for('main.register') }}">No account? Register</a>

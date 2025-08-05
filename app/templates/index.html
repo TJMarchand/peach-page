@@ -15,9 +15,9 @@
 </head>
 
 <body>
-  <h1>Mini Forum</h1>
+  <img id="peach-gif" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXV0dDY2cW1hc3lxNjZnOXBnOWs4ODU5MXJneXF3bjd5eGxweXd2YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ev1hGaBuRs448/giphy.gif">
 
-  <h2>Welcome{% if user %}, {{ user }}{% endif %}</h2>
+  <h2>Welcome to Peach Page{% if user %}, {{ user }}{% endif %}!</h2>
 
   {% if user %}
     <form method="post">
@@ -29,12 +29,16 @@
     <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
   {% endif %}
 
-  <h2>Messages:</h2>
-  {% for msg in messages %}
-    <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
-  {% else %}
-    <p>No messages yet.</p>
-  {% endfor %}
+  {% if user %}
+  <div id="forum">
+    <h2>Messages:</h2>
+    {% for msg in messages %}
+      <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
+    {% else %}
+      <p>No messages yet.</p>
+    {% endfor %}
+  </div>
+  {% endif %}
 
 {#
   This is a Jinja2 comment. It works when processing with flask. for {% %} statements.
