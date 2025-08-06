@@ -3,6 +3,3 @@ __pycache__/
 venv/
 .env
 *.sqlite3
-*.logapp/data/messages.json
-app/data/users.json
-app/data/messages.json
