@@ -22,7 +22,7 @@
     {% if user %}
       <form method="post">
         <textarea name="content" required></textarea><br>
-        <button submit">Post message</button>
+        <button type="submit">Post message</button>
       </form>
       <p><a href="{{ url_for('main.logout') }}">Logout</a></p>
     {% else %}
