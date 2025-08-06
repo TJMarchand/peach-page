@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Web App</title>
+  <title>Peach Page</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
   <script>
@@ -15,19 +15,21 @@
 </head>
 
 <body>
-    <h2>Login</h2>
-    <p>{% if non_exist %}Username of password incorrect.{% endif %}</p>
-    <form method="post">
-    <div class="form-row">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
+    <div class="user-credentials">
+        <h2>Login</h2>
+        <p class="user-exist-message">{% if non_exist %}Username or password incorrect.{% endif %}</p>
+        <form method="post">
+        <div class="credential-form-row">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ prev_username | default('') }}" required>
+        </div>
+        <div class="credential-form-row">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <button class="credential-button" type="submit">Login</button>
+        </form>
+        <a href="{{ url_for('main.register') }}">No account? Register</a>
     </div>
-    <div class="form-row">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
-    </div>
-    <button type="submit">Login</button>
-    </form>
-    <a href="{{ url_for('main.register') }}">No account? Register</a>
 </body>
 </html>

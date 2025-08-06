@@ -10,30 +10,107 @@ body {
   color: palevioletred;
 }
 
-/* ==== Forum styles ==== */
+/* ========================= Forum styles ========================== */
 #peach-gif {
-  width: 30%;
+  width: 90%;
+  max-width: 600px;
   border: 5px solid pink;
-  border-radius: 5%;
+  border-radius: 10px;
+  box-sizing: border-box
+}
+
+#post-forum {
+  margin: 20px auto 0 auto;
+  width: 90%;
+  max-width: 500px;
+  padding: 0px 30px 0px 30px;
+  border: 5px solid pink;
+  border-radius: 20px;
+  background-color: aliceblue;
+  box-sizing: border-box;
+}
+
+#post-forum textarea {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+#post-forum button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0 0 0;
+  border: 2px solid pink;
+  border-radius: 10px;
+
+  font-size: 20px;
+  background-color: pink;
+  color: blueviolet;
 }
 
 #forum {
   margin: 50px auto 0 auto;
-  width: 800px;
+  width: 90%;
+  max-width: 800px;
   background-color: aliceblue;
   border: 5px solid lightblue;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+/* ===================== Registration / Login styles ================= */
+.user-credentials {
+  margin: 20px auto 0 auto;
+  padding: 20px 40px;
+  width: 90%;
+  max-width: 400px;
+  border: 5px solid pink;
   border-radius: 10%;
+  background-color: aliceblue;
+  box-sizing: border-box
+}
+.user-credentials h2 {
+  margin-bottom: 10px;
 }
 
-.form-row {
+.user-credentials p {
+  margin: 5px;
+}
+
+.credential-form-row {
   display: grid;
-  grid-template-columns: 120px 1fr; /* fixed width for label, flexible for input */
-  margin: 10px auto 10px auto;
+  grid-template-columns: 1fr 3fr; /* fixed width for label, flexible for input */
+  gap: 10px;
+  margin-bottom: 15px;
   align-items: center;
-  width: 300px;
 }
 
-label {
-  text-align: right;
-  margin-right: 40px;
+.credential-form-row label {
+  text-align: left;
+}
+
+.credential-button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0 20px 0;
+  border: 2px solid pink;
+  border-radius: 10px;
+
+  font-size: 20px;
+  background-color: pink;
+  color: blueviolet;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box /* makes sure input box doesn't overflow */
+}
+
+.user-exist-message {
+  height: 1.5em;
+  color: red;
+  text-align: center;
 }

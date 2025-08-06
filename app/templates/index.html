@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Web App</title>
+  <title>Peach Page</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
   <script>
@@ -15,19 +15,20 @@
 </head>
 
 <body>
+  <h1>Welcome to Peach Page{% if user %}, {{ user }}{% endif %}!</h1>
   <img id="peach-gif" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXV0dDY2cW1hc3lxNjZnOXBnOWs4ODU5MXJneXF3bjd5eGxweXd2YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ev1hGaBuRs448/giphy.gif">
 
-  <h2>Welcome to Peach Page{% if user %}, {{ user }}{% endif %}!</h2>
-
-  {% if user %}
-    <form method="post">
-      <textarea name="content" required></textarea><br>
-      <button type="submit">Post message</button>
-    </form>
-    <p><a href="{{ url_for('main.logout') }}">Logout</a></p>
-  {% else %}
-    <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
-  {% endif %}
+  <div id="post-forum">
+    {% if user %}
+      <form method="post">
+        <textarea name="content" required></textarea><br>
+        <button submit">Post message</button>
+      </form>
+      <p><a href="{{ url_for('main.logout') }}">Logout</a></p>
+    {% else %}
+      <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
+    {% endif %}
+  </div>
 
   {% if user %}
   <div id="forum">
