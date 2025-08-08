@@ -22,9 +22,9 @@
     {% if user %}
       <form method="post">
         <textarea name="content" required></textarea><br>
-        <button type="submit">Post message</button>
+        <button type="submit" name="action" value="post">Post message</button>
       </form>
-      <p><a href="{{ url_for('main.logout') }}">Logout</a></p>
+      <p><a href="{{ url_for('main.userlist') }}">User list</a> <a href="{{ url_for('main.logout') }}">Logout</a></p>
     {% else %}
       <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
     {% endif %}
@@ -32,9 +32,17 @@
 
   {% if user %}
   <div id="forum">
-    <h2>Messages:</h2>
+    <h1>Messages:</h1>
     {% for msg in messages %}
-      <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
+      <div class="message-container">
+        <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
+        {% if admin == "True" %}
+          <form method="Post">
+            <input type="hidden" name="message_id" value="{{ msg.id }}">
+            <button type="submit" class="delete-btn" name="action" value="delete">Del</button>
+          </form>
+        {% endif %}
+      </div>
     {% else %}
       <p>No messages yet.</p>
     {% endfor %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peach Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register("{{ url_for('static', filename='js/service_worker.js') }}");
+    }
+  </script>
+</head>
+
+<body>
+  <div id="forum">
+    <h1>Users:</h1>
+    {% for usr in users %}
+      <p>{{ usr }}</p>
+    {% else %}
+      <p>No users yet.</p>
+    {% endfor %}
+    <a href="{{ url_for('main.index') }}">Forum</a>
+  </div>
+</body>
+</html>

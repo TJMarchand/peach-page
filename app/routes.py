@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for
-from .logic import load_messages, save_message, save_user, verify_user
+from .logic import load_messages, save_message, delete_message, save_user, verify_user, load_users
 
 main = Blueprint("main", __name__)
 
@@ -9,14 +9,30 @@ def index():
     if request.method == "POST":
         if "username" not in session:
             return redirect(url_for("main.login"))
-        name = session["username"]
-        content = request.form.get("content")
-        save_message(name, content)
+        
+        action = request.form.get("action")
+
+        if action == "post":
+            name = session["username"]
+            content = request.form.get("content")
+            save_message(name, content)
+        
+        elif action == "delete":
+            message_id = int(request.form.get("message_id"))
+            delete_message(message_id)
+
         return redirect(url_for("main.index"))  # Prevent re-posting on refresh
-    # if it's anything else than "POST"
+    
+    # if it's anything else than "POST" (i.e. "GET").
     messages = load_messages()
+    users = load_users()
+    user = session.get("username")
+    if user:
+        admin = users[user]['admin']
+    else:
+        admin = None
     # Have to return to send things back to browser. It is what Flask sends to browser.
-    return render_template("index.html", messages=messages, user=session.get("username"))
+    return render_template("index.html", messages=messages, user=user, admin=admin)
 
 @main.route("/register", methods=["GET", "POST"])
 def register():
@@ -47,6 +63,12 @@ def login():
 def logout():
     session.pop("username", None)
     return redirect(url_for("main.index"))
+
+@main.route("/userlist", methods=["GET"])
+def userlist():
+    users = load_users().keys()
+    return render_template("userlist.html", users=users)
+
 
 """
 main is an instance of the class Blueprint.

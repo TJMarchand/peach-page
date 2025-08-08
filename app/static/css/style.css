@@ -60,6 +60,28 @@ body {
   box-sizing: border-box;
 }
 
+.message-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  margin: 0 16px;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  pointer-events: none; /* Prevent clicking when hidden */
+}
+
+.message-container:hover .delete-btn {
+  opacity: 1;
+  pointer-events: auto;
+  color: black;
+}
+
 /* ===================== Registration / Login styles ================= */
 .user-credentials {
   margin: 20px auto 0 auto;
