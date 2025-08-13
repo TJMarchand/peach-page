@@ -19,8 +19,7 @@ DEFAULT_MESSAGES: Dict[str, List[Dict[str, Any]]] = {
     "Home": [{"name": "Peach", "content": "Welcome to Peach page!", "id": 0}]
 }
 DEFAULT_METADATA: Dict[str, Any] = {
-    "message_id_counters": {"Home": 1},  # 'Home' already used id 0
-    "current_thread": "Home"
+    "message_id_counters": {"Home": 1}  # 'Home' already used id 0
 }
 
 
@@ -122,27 +121,11 @@ def get_threads() -> List[str]:
     return list(messages.keys()) # return stable list (convert from dict_keys)
 
 
-def get_current_thread() -> Optional[str]:
-    metadata = load_metadata()
-    return metadata.get("current_thread")
-
-
 def get_messages_for_thread(thread: Optional[str] = None) -> List[Dict[str, Any]]:
     messages = load_messages()
-    if thread is None:
-        thread = get_current_thread()
     if not thread:
         return []
     return messages.get(thread, [])
-
-
-def set_current_thread(thread: str) -> None:
-    """
-    Switch current thread.
-    """
-    metadata = load_metadata()
-    metadata["current_thread"] = thread
-    save_metadata(metadata)
 
 
 def save_message(author: str, content: str, thread: Optional[str] = None) -> int:
@@ -151,9 +134,7 @@ def save_message(author: str, content: str, thread: Optional[str] = None) -> int
     """
     metadata = load_metadata()
     if thread is None:
-        thread = metadata.get("current_thread")
-    if thread is None:
-        raise ValueError("No thread specified and no current thread set.")
+        raise ValueError("No thread specified.")
 
     messages = load_messages()
     # .setdefault returns the value of the key (messages["thread"]) if the key exists.
@@ -177,8 +158,6 @@ def delete_message(thread: Optional[str], message_id: int) -> bool:
     """
     Delete message by id in the given thread. Return True if something was deleted.
     """
-    if thread is None:
-        thread = get_current_thread()
     if thread is None:
         return False
     messages = load_messages()
@@ -206,110 +185,3 @@ def start_thread(thread_name: str) -> bool:
     metadata.setdefault("message_id_counters", {})[thread_name] = 0
     save_metadata(metadata)
     return True
-
-
-
-
-
-
-# ----------------------------------------------------------------------------
-#                                OLD FUNCTIONS
-# ----------------------------------------------------------------------------
-def get_current_thread_old():
-    try:
-        with open(METADATA_FILE, 'r') as f:
-            metadata = json.load(f)
-            return metadata['current_thread']
-    except (FileNotFoundError, json.JSONDecodeError):
-        return None
-
-    
-def save_user_old(username, password):
-    users = load_users()
-    if username in users:
-        return False    # User already exists.
-    users[username] = {}
-    users[username]['password'] = password
-    users[username]['admin'] = 0
-    with open(USER_FILE, 'w') as f:
-        json.dump(users, f)
-    return True
-
-def verify_user_old(username, password):
-    users = load_users()
-    if username not in users:
-        return False
-    if users[username]["password"] == password:
-        return True
-    else:
-        return False
-
-def load_messages_old():
-    try:
-        with open(MESSAGE_FILE, 'r') as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-    
-def load_messages_thread_old():
-    try:
-        all_messages = load_messages()
-        with open(METADATA_FILE, 'r') as f:
-            metadata = json.load(f)
-        thread = metadata['current_thread']
-        messages = all_messages[thread]
-        return messages
-    
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-    
-def load_threads_old():
-    threads = load_messages().keys()
-    return threads
-
-def save_message_old(name, content):
-    with open(METADATA_FILE, 'r') as f:
-        metadata = json.load(f)
-    thread = metadata['current_thread']
-    message_id = metadata["message_id_counters"][thread]
-    metadata["message_id_counters"][thread] += 1
-
-    with open(METADATA_FILE, 'w') as f:
-        json.dump(metadata, f)
-
-    messages = load_messages()
-    messages[thread].append({'author': name, 'content': content, 'id': message_id})
-    with open(MESSAGE_FILE, 'w') as f:
-        json.dump(messages, f)
-
-def save_all_messages_old(messages):
-    with open(MESSAGE_FILE, 'w') as f:
-        json.dump(messages, f)
-
-def delete_message_old(message_id):
-    thread = get_current_thread()
-    messages = load_messages()
-    new_messages_thread = [msg for msg in messages[thread] if msg["id"] != message_id]
-    messages[thread] = new_messages_thread
-    save_all_messages(messages)
-
-def start_thread_old(content):
-    # Add message id counter to metadata file for new thread
-    with open(METADATA_FILE, 'r') as f:
-        metadata = json.load(f)
-    metadata["message_id_counters"][content] = 0
-    with open(METADATA_FILE, 'w') as f:
-        json.dump(metadata, f)
-
-    # Add list for messages of new thread to message file
-    messages = load_messages()
-    messages[content] = []
-    save_all_messages(messages)
-
-def change_thread_old(new_thread):
-    print("Changing thread")
-    with open(METADATA_FILE, 'r') as f:
-        metadata = json.load(f)
-    metadata["current_thread"] = new_thread
-    with open(METADATA_FILE, 'w') as f:
-        json.dump(metadata, f)

@@ -12,9 +12,8 @@ main = Blueprint("main", __name__)
 @main.route("/", methods=["GET", "POST"])
 def index():
     user = session.get("username")
+    current_thread = session.setdefault("current_thread", "Home")
     threads = logic.get_threads()
-    # Don't understand line below
-    current_thread = logic.get_current_thread() or (threads[0] if threads else None)
 
     # POST actions: post message, delete message, start thread, change thread
     if request.method == "POST":
@@ -36,12 +35,12 @@ def index():
             new_thread = request.form.get("content", "").strip()
             if new_thread:
                 created = logic.start_thread(new_thread)
-                logic.set_current_thread(new_thread)
+                session["current_thread"] = new_thread
 
         elif action == "change_thread":
             new_thread = request.form.get("new_thread")
             if new_thread:
-                logic.set_current_thread(new_thread)
+                session["current_thread"] = new_thread
         
         elif action == "delete":
             message_id = request.form.get("message_id")
