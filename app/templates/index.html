@@ -55,7 +55,7 @@
     <h2 id="current-thread-heading">{{ current_thread or 'No thread selected'}}:</h2>
     {% for msg in messages %}
       <div class="message-container">
-        <p><strong>{{ msg.author }}</strong>: {{ msg.content }}</p>
+        <p class="message-text"><strong>{{ msg.author }}</strong>: {{ msg.content }}</p>
         {% if admin %}
           <form method="post" action="{{ url_for('main.index') }}" class="delete-form">
             <input type="hidden" name="message_id" value="{{ msg.id }}">
