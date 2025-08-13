@@ -86,6 +86,7 @@ body {
   align-items: center;
   margin: 0 16px;
   box-sizing: border-box;
+  overflow-wrap: break-all;
 }
 
 .message-content {
