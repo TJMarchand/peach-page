@@ -1,3 +1,4 @@
+/* ===================== Global / Reset ===================== */
 html {
   min-height: 100%;
 }
@@ -13,17 +14,18 @@ body {
 /* ========================= Forum styles ========================== */
 #peach-gif {
   width: 90%;
+  height: auto;
   max-width: 600px;
   border: 5px solid pink;
   border-radius: 10px;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 #post-forum {
   margin: 20px auto 0 auto;
   width: 90%;
   max-width: 500px;
-  padding: 0px 30px 0px 30px;
+  padding: 0px 30px;
   border: 5px solid pink;
   border-radius: 20px;
   background-color: aliceblue;
@@ -39,25 +41,42 @@ body {
 }
 
 #post-forum button {
-  width: 100%;
+  cursor: pointer;
   padding: 10px;
-  margin: 10px 0 0 0;
-  border: 2px solid pink;
+  margin: 10px 5px 0 5px;
+  border: 2px solid palevioletred;
   border-radius: 10px;
-
+  flex: 1;
   font-size: 20px;
   background-color: pink;
-  color: blueviolet;
+  color: rgb(23, 66, 80);
+}
+#post-forum button:hover {
+  background-color: #ffb6c1;
 }
 
-#forum {
-  margin: 50px auto 0 auto;
+#forum-container {
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  width: 90%;
+  max-width: 900px;
+  background-color: aliceblue;
+  border: 5px solid lightblue;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding-bottom: 0px;
+  margin: 20px auto 0 auto;
+}
+
+#userlist {
   width: 90%;
   max-width: 800px;
   background-color: aliceblue;
   border: 5px solid lightblue;
   border-radius: 20px;
   box-sizing: border-box;
+  padding-bottom: 10px;
+  margin: 50px auto 0 auto;
 }
 
 .message-container {
@@ -65,8 +84,41 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
   margin: 0 16px;
+}
+
+.message-content {
+  white-space: pre-wrap; /* preserve newlines in messages */
+  word-break: break-word;
+}
+
+.thread-btn {
+  width: 100%;
+  padding: 3px;
+  margin: 2px 0;
+  border: 2px solid rgb(123, 166, 180);
+  background-color: lightblue;
+  color: rgb(23, 66, 80);
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  cursor: pointer;
+}
+.thread-btn:hover {
+  background-color: rgb(163, 206, 220);
+}
+.thread-active {
+  background-color: pink;
+  border-color: palevioletred;
+  font-weight: bold;
+}
+.thread-active:hover {
+  background-color: #ffb6c1;
+}
+
+#thread-container {
+  border-right: 3px solid lightblue;
+  padding: 5px;
 }
 
 .delete-btn {
@@ -79,7 +131,8 @@ body {
 .message-container:hover .delete-btn {
   opacity: 1;
   pointer-events: auto;
-  color: black;
+  color: rgb(23, 66, 80);
+  cursor: pointer;
 }
 
 /* ===================== Registration / Login styles ================= */
@@ -119,10 +172,15 @@ body {
   margin: 10px 0 20px 0;
   border: 2px solid pink;
   border-radius: 10px;
-
   font-size: 20px;
   background-color: pink;
-  color: blueviolet;
+  border: 2px solid palevioletred;
+  border-radius: 10px;
+  color: rgb(23, 66, 80);
+  cursor: pointer;
+}
+.credential-button:hover {
+  background-color: #ffb6c1;
 }
 
 input {
@@ -131,8 +189,73 @@ input {
   box-sizing: border-box /* makes sure input box doesn't overflow */
 }
 
+input, textarea {
+  background-color: #fffafa; /* light pink-white */
+  border: 2px solid pink;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 16px;
+  color: rgb(23, 66, 80);
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+input:focus, textarea:focus {
+  background-color: #fff0f5;
+  border-color: palevioletred;
+  outline: none;
+  box-shadow: 0 0 4px rgba(255, 182, 193, 0.8);
+}
+
 .user-exist-message {
   height: 1.5em;
   color: red;
   text-align: center;
+}
+
+/* ============================== UTILITY CLASSES ========================== */
+
+.flex-center-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Screen-reader-only text */
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* ============================== Flash messages ========================== */
+.flashes {
+  list-style: none;
+  padding: 0.2rem;
+  margin: 0 0 1rem 0;
+  border-radius: 6px;
+}
+.flashes li {
+  background: rgba(255,255,255,0.9);
+  padding: 6px 10px;
+  margin-bottom: 6px;
+}
+
+/* ============================== Responsive tweaks ========================== */
+@media (max-width: 600px) {
+  #forum-container {
+    grid-template-columns: 1fr; /* stack threads and messages */
+  }
+  #thread-container {
+    border-right: none;
+    border-bottom: 3px solid lightblue;
+  }
+  .credential-form-row {
+    grid-template-columns: 1fr; /* stack labels and inputs vertically */
+  }
 }

@@ -1,35 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block title %}Peach Page — Login{% endblock %}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peach Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register("{{ url_for('static', filename='js/service_worker.js') }}");
-    }
-  </script>
-</head>
+{% block content %}
+<div class="user-credentials" role="region" aria-labelledby="login-heading">
+  <h2 id="login-heading">Login</h2>
 
-<body>
-    <div class="user-credentials">
-        <h2>Login</h2>
-        <p class="user-exist-message">{% if non_exist %}Username or password incorrect.{% endif %}</p>
-        <form method="post">
-        <div class="credential-form-row">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" value="{{ prev_username | default('') }}" required>
-        </div>
-        <div class="credential-form-row">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password">
-        </div>
-        <button class="credential-button" type="submit">Login</button>
-        </form>
-        <a href="{{ url_for('main.register') }}">No account? Register</a>
-    </div>
-</body>
-</html>
+  {% if user %}
+    <p>You are alread logged in.</p>
+    <p><a href="{{ url_for('main.logout_login') }}">Logout</a> or go <a href="{{ url_for('main.index') }}">back to forum</a>.</p>
+  {% else %}
+    <p class="user-exist-message">{% if non_exist %}Username or password incorrect.{% endif %}</p>
+
+    <form method="post" action="{{ url_for('main.login') }}">
+      <div class="credential-form-row">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ prev_username | default('') }}" required autocomplete="username">
+      </div>
+
+      <div class="credential-form-row">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" autocomplete="current-password">
+      </div>
+
+      <button class="credential-button" type="submit">Login</button>
+    </form>
+
+    <p>No account? <a href="{{ url_for('main.register') }}">Register</a></p>
+  {% endif %}
+</div>
+{% endblock %}

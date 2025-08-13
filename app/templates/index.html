@@ -1,53 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- templates/index.html -->
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peach Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register("{{ url_for('static', filename='js/service_worker.js') }}");
-    }
-  </script>
-</head>
+{% extends "base.html" %}
+{% block title %}Peach Page - Forum{% endblock %}
 
-<body>
-  <h1>Welcome to Peach Page{% if user %}, {{ user }}{% endif %}!</h1>
-  <img id="peach-gif" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXV0dDY2cW1hc3lxNjZnOXBnOWs4ODU5MXJneXF3bjd5eGxweXd2YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ev1hGaBuRs448/giphy.gif">
+{% block content %}
+<section id="hero" aria-label="Welcome">
+  <img id="peach-gif"
+       src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXV0dDY2cW1hc3lxNjZnOXBnOWs4ODU5MXJneXF3bjd5eGxweXd2YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ev1hGaBuRs448/giphy.gif"
+       alt="Animated Peach" />
+</section>
 
-  <div id="post-forum">
-    {% if user %}
-      <form method="post">
-        <textarea name="content" required></textarea><br>
-        <button type="submit" name="action" value="post">Post message</button>
-      </form>
-      <p><a href="{{ url_for('main.userlist') }}">User list</a> <a href="{{ url_for('main.logout') }}">Logout</a></p>
-    {% else %}
-      <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
-    {% endif %}
-  </div>
-
+<!-- Posting and starting threads -->
+<section id="post-forum">
   {% if user %}
-  <div id="forum">
-    <h1>Messages:</h1>
+    <form method="post">
+      <textarea name="content" required></textarea><br>
+
+      <div class="flex-center-around">
+        <button type="submit" name="action" value="thread">Start thread</button>
+        <button type="submit" name="action" value="post">Post message</button>
+      </div>
+    </form>
+
+    <div class="flex-center-around">
+      <p><a href="{{ url_for('main.userlist') }}">User list</a></p>
+      <p><a href="{{ url_for('main.logout_forum') }}">Logout</a></p>
+    </div>
+  {% else %}
+    <p><a href="{{ url_for('main.login') }}">Login</a> or <a href="{{ url_for('main.register') }}">Register</a> to post</p>
+  {% endif %}
+</section>
+
+{% if user %}
+<section id="forum-container" aria-label="Forum">
+  <aside id="thread-container" aria-labelledby="threads-heading">
+    <h2 id="threads-heading">Threads:</h2>
+      {% for thd in threads %}
+        <form method="post" action="{{ url_for('main.index')}}" style="display:inline;">
+          <input type="hidden" name="new_thread" value="{{ thd }}">
+          <button type="submit"
+                  class="thread-btn {% if thd == current_thread %}thread-active{% endif %}"
+                  name="action"
+                  value="change_thread"
+                  aria-pressed="{{ 'true' if thd == current_thread else 'false' }}">
+            {{ thd }}
+          </button>
+        </form>
+      {% else %}
+        <li>No threads yet.</li>
+      {% endfor %}
+  </aside>
+
+  <section id="forum">
+    <h2 id="current-thread-heading">{{ current_thread or 'No thread selected'}}:</h2>
     {% for msg in messages %}
       <div class="message-container">
-        <p><strong>{{ msg.name }}</strong>: {{ msg.content }}</p>
-        {% if admin == "True" %}
-          <form method="Post">
+        <p><strong>{{ msg.author }}</strong>: {{ msg.content }}</p>
+        {% if admin %}
+          <form method="post" action="{{ url_for('main.index') }}" class="delete-form">
             <input type="hidden" name="message_id" value="{{ msg.id }}">
-            <button type="submit" class="delete-btn" name="action" value="delete">Del</button>
+            <button type="submit" class="delete-btn" name="action" value="delete" aria-label="Delete messages {{ msg.id }}">Del</button>
           </form>
         {% endif %}
       </div>
     {% else %}
       <p>No messages yet.</p>
     {% endfor %}
-  </div>
-  {% endif %}
+    </section>
+</section>
+{% endif %}
+
+{% endblock %}
 
 {#
   This is a Jinja2 comment. It works when processing with flask. for {% %} statements.
@@ -55,8 +78,3 @@
   Output values with {{ var }}.
   Jinja2 allows reading dictionaries with dots. Below 'name' is the key. Thus msg.name is msg["name"].
 #}
-
-</body>
-
-</html>
-
