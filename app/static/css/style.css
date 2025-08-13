@@ -85,18 +85,15 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0 16px;
-  box-sizing: border-box;
-  overflow-wrap: break-all;
 }
 
 .message-content {
   white-space: pre-wrap; /* preserve newlines in messages */
-  word-break: break-word;
 }
 
 .message-text {
   margin: 7px;
-  box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 
 .thread-btn {
